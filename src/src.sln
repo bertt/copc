@@ -3,7 +3,9 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.1.32328.378
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "copc", "copc.csproj", "{DB9A629D-05C0-471E-9A16-2B054F0068C6}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "copc-tests", "copc-tests.csproj", "{DB9A629D-05C0-471E-9A16-2B054F0068C6}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "copc", "..\copc\copc.csproj", "{2AC7F5D9-382D-48B6-8071-38A8F06CF79F}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -15,6 +17,10 @@ Global
 		{DB9A629D-05C0-471E-9A16-2B054F0068C6}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{DB9A629D-05C0-471E-9A16-2B054F0068C6}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{DB9A629D-05C0-471E-9A16-2B054F0068C6}.Release|Any CPU.Build.0 = Release|Any CPU
+		{2AC7F5D9-382D-48B6-8071-38A8F06CF79F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{2AC7F5D9-382D-48B6-8071-38A8F06CF79F}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{2AC7F5D9-382D-48B6-8071-38A8F06CF79F}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{2AC7F5D9-382D-48B6-8071-38A8F06CF79F}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
