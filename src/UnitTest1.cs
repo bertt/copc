@@ -16,12 +16,12 @@ public class Tests
         var headerBytes = await GetHttpRange(url, httpClient, 0, 549);
 
         var header = HeaderParser.ParseHeader(headerBytes);
-        Assert.IsTrue(header.FileSignature == "LASF");
-        Assert.IsTrue(header.CopcSignature == "copc");
-        Assert.IsTrue(header.MajorVersion == 1);
-        Assert.IsTrue(header.MinorVersion == 0);
-        Assert.IsTrue(header.PointDataRecordFormat == 6);
-        Assert.IsTrue(header.PointDataRecordLength == 30);
+        Assert.That(header.FileSignature == "LASF");
+        Assert.That(header.CopcSignature == "copc");
+        Assert.That(header.MajorVersion == 1);
+        Assert.That(header.MinorVersion == 0);
+        Assert.That(header.PointDataRecordFormat == 6);
+        Assert.That(header.PointDataRecordLength == 30);
     }
 
     private static async Task<byte[]> GetHttpRange(string url, HttpClient httpClient, int start = 0, int end = 0)
