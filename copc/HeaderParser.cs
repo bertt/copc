@@ -6,26 +6,42 @@ namespace copc
     {
         public static Header ParseHeader(byte[] headerBytes)
         {
-            // specs see https://copc.io/
             var header = new Header();
-            header.FileSignature = Encoding.UTF8.GetString(headerBytes.Take(4).ToArray());
-            header.FileSourceId = BitConverter.ToUInt16(headerBytes.Skip(4).Take(2).ToArray());
-            header.GlobalEncoding = BitConverter.ToUInt16(headerBytes.Skip(6).Take(2).ToArray());
-            var projectId1 = BitConverter.ToInt32(headerBytes.Skip(8).Take(4).ToArray());
-            var projectId2 = (short)BitConverter.ToUInt16(headerBytes.Skip(12).Take(2).ToArray());
-            var projectId3 = (short)BitConverter.ToUInt16(headerBytes.Skip(14).Take(2).ToArray());
-            var projectId4 = headerBytes.Skip(16).Take(8).ToArray();
+            var reader = new BinaryReader(new MemoryStream(headerBytes));
+            header.FileSignature = Encoding.Default.GetString(reader.ReadBytes(4));
+            header.FileSourceId = reader.ReadUInt16();
+            header.GlobalEncoding = reader.ReadUInt16();
+            var projectId1 = reader.ReadInt32();
+            var projectId2 = reader.ReadInt16();
+            var projectId3 = reader.ReadInt16();
+            var projectId4 = reader.ReadBytes(8);
             header.ProjectId = new Guid(projectId1, projectId2, projectId3, projectId4);
-            header.LasMajorVersion = headerBytes.Skip(24).FirstOrDefault();
-            header.LasMinorVersion = headerBytes.Skip(25).FirstOrDefault();
+            header.LasMajorVersion = reader.ReadByte();
+            header.LasMinorVersion = reader.ReadByte();
+            header.SystemIdentifier = Encoding.Default.GetString(reader.ReadBytes(32)).Replace("\0", string.Empty);
+            header.GeneratingSoftware = Encoding.Default.GetString(reader.ReadBytes(32)).Replace("\0", string.Empty);
+            header.FileCreationDayOfYear = reader.ReadUInt16();
+            header.FileCreationYear = reader.ReadUInt16();
+            header.HeaderSize = reader.ReadUInt16();
+            header.PointDataOffset = reader.ReadUInt32();
+            header.NumberOfVariableLengthRecords = reader.ReadUInt32();
+            header.PointDataRecordFormat = reader.ReadByte() & 0b1111;
+            header.PointDataRecordLength = reader.ReadUInt16();
+            header.LegacyNumberOfPointRecords = reader.ReadUInt32();
+            header.LegacyNumberOfPointByReturn = new ulong[5];
+            for (var i = 0; i < 5; i++)
+            {
+                header.LegacyNumberOfPointByReturn[i] = reader.ReadUInt32();
+            }
+            header.XScaleFactor = reader.ReadDouble();
+            header.YScaleFactor = reader.ReadDouble();
+            header.ZScaleFactor = reader.ReadDouble();
 
-            // Todo read many more fields
+            header.XOffset = reader.ReadDouble();
+            header.YOffset = reader.ReadDouble();
+            header.ZOffset = reader.ReadDouble();
 
-            header.CopcSignature = Encoding.UTF8.GetString(headerBytes.Skip(377).Take(4).ToArray());
-            header.MajorVersion = headerBytes.Skip(393).FirstOrDefault();
-            header.MinorVersion = headerBytes.Skip(394).FirstOrDefault();
-            header.PointDataRecordFormat = headerBytes.Skip(104).FirstOrDefault() & 0b1111;
-            header.PointDataRecordLength = BitConverter.ToUInt16(headerBytes.Skip(105).Take(2).ToArray());
+            // todo read more properties
             return header;
         }
     }

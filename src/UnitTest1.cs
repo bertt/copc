@@ -11,7 +11,6 @@ public class Tests
     [Test]
     public async Task ReadCOPC()
     {
-
         // 589 bytes
         // 2.3GB sofi stadium
         var url = "https://s3.amazonaws.com/hobu-lidar/sofi.copc.laz";
@@ -25,15 +24,27 @@ public class Tests
         Assert.That(header.ProjectId == Guid.Empty);
         Assert.That(header.LasMajorVersion == 1);
         Assert.That(header.LasMinorVersion == 4);
-
-        Assert.That(header.CopcSignature == "copc");
-        Assert.That(header.MajorVersion == 1);
-        Assert.That(header.MinorVersion == 0);
+        Assert.That(header.SystemIdentifier == "");
+        Assert.That(header.GeneratingSoftware == "");
+        Assert.That(header.FileCreationDayOfYear == 1);
+        Assert.That(header.FileCreationYear == 1);
+        Assert.That(header.HeaderSize == 375);
+        Assert.That(header.PointDataOffset == 1545);
+        Assert.That(header.NumberOfVariableLengthRecords == 3);
         Assert.That(header.PointDataRecordFormat == 6);
         Assert.That(header.PointDataRecordLength == 30);
-
-
-        // points should be 364,384,576
+        Assert.That(header.LegacyNumberOfPointRecords == 364384576);
+        Assert.That(header.LegacyNumberOfPointByReturn[0] == 347247515);
+        Assert.That(header.LegacyNumberOfPointByReturn[1] == 15507300);
+        Assert.That(header.LegacyNumberOfPointByReturn[2] == 1500443);
+        Assert.That(header.LegacyNumberOfPointByReturn[3] == 121130);
+        Assert.That(header.LegacyNumberOfPointByReturn[4] == 7778);
+        Assert.That(header.XScaleFactor == 0.001);
+        Assert.That(header.YScaleFactor == 0.001);
+        Assert.That(header.ZScaleFactor == 0.001);
+        Assert.That(header.XOffset == 376331.560);
+        Assert.That(header.YOffset == 3757833.285);
+        Assert.That(header.ZOffset == 27.238);
     }
 
     private static async Task<byte[]> GetHttpRange(string url, HttpClient httpClient, int start = 0, int end = 0)
