@@ -45,6 +45,34 @@ public class Tests
         Assert.That(header.XOffset == 376331.560);
         Assert.That(header.YOffset == 3757833.285);
         Assert.That(header.ZOffset == 27.238);
+        Assert.That(header.MaxX == 376899.027);
+        Assert.That(header.MinX == 375764.094);
+        Assert.That(header.MaxY == 3758462.189);
+        Assert.That(header.MinY == 3757204.382);
+        Assert.That(header.MaxZ == 138.186);
+        Assert.That(header.MinZ == -83.709);
+
+        Assert.That(header.WaveformDataOffset == 0);
+        Assert.That(header.EvlrOffset == 2029271627);
+        Assert.That(header.EvlrCount == 1);
+        Assert.That(header.PointCount == 364384576);
+
+        Assert.That(header.PointCountByReturn[0] == 347247515);
+        Assert.That(header.PointCountByReturn[1] == 15507300);
+        Assert.That(header.PointCountByReturn[2] == 1500443);
+        Assert.That(header.PointCountByReturn[3] == 121130);
+        Assert.That(header.PointCountByReturn[4] == 7778);
+        Assert.That(header.PointCountByReturn[5] == 390);
+        Assert.That(header.PointCountByReturn[6] == 19);
+        Assert.That(header.PointCountByReturn[7] == 1);
+        Assert.That(header.PointCountByReturn[8] == 0);
+        Assert.That(header.PointCountByReturn[9] == 0);
+        Assert.That(header.PointCountByReturn[10] == 0);
+        Assert.That(header.PointCountByReturn[11] == 0);
+        Assert.That(header.PointCountByReturn[12] == 0);
+        Assert.That(header.PointCountByReturn[13] == 0);
+        Assert.That(header.PointCountByReturn[14] == 0);
+            
     }
 
     private static async Task<byte[]> GetHttpRange(string url, HttpClient httpClient, int start = 0, int end = 0)

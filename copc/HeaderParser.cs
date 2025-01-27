@@ -41,7 +41,24 @@ namespace copc
             header.YOffset = reader.ReadDouble();
             header.ZOffset = reader.ReadDouble();
 
-            // todo read more properties
+            header.MaxX = reader.ReadDouble();
+            header.MinX = reader.ReadDouble();
+            header.MaxY = reader.ReadDouble();
+            header.MinY = reader.ReadDouble();
+            header.MaxZ = reader.ReadDouble();
+            header.MinZ = reader.ReadDouble();
+
+            header.WaveformDataOffset = reader.ReadInt64();
+            header.EvlrOffset = reader.ReadInt64();
+            header.EvlrCount = reader.ReadUInt32();
+            header.PointCount = reader.ReadInt64();
+
+            header.PointCountByReturn = new long[15];
+            for (var i = 0; i < 15; i++)
+            {
+                header.PointCountByReturn[i] = reader.ReadInt64();
+            }
+
             return header;
         }
     }

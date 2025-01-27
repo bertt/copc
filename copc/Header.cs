@@ -34,6 +34,23 @@
         public double YOffset { get; internal set; }
         public double ZOffset { get; internal set; }
 
+        public double MaxX { get; internal set; }
+
+        public double MinX { get; internal set; }
+        public double MaxY { get; internal set; }
+        public double MinY { get; internal set; }
+        public double MaxZ { get; internal set; }
+        public double MinZ { get; internal set; }
+
+        public long WaveformDataOffset { get; set; }
+
+        public long EvlrOffset { get; set; }
+
+        public ulong EvlrCount { get; set; }
+
+        public long PointCount { get; set; }
+
+        public long[] PointCountByReturn { get; set; }
 
         public string CopcSignature { get; set; }
         public int MajorVersion { get; set; }
