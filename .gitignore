@@ -349,3 +349,4 @@ MigrationBackup/
 # Ionide (cross platform F# VS Code tools) working folder
 .ionide/
 /src/copc.v3.ncrunchsolution
+/src/tests/copc.v3.ncrunchsolution
