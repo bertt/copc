@@ -1,5 +1,6 @@
 using NUnit.Framework;
 using System;
+using System.IO;
 using System.Net.Http;
 using System.Net.Http.Headers;
 using System.Threading.Tasks;
@@ -16,8 +17,10 @@ public class Tests
         var url = "https://s3.amazonaws.com/hobu-lidar/sofi.copc.laz";
         var httpClient = new HttpClient();
         var headerBytes = await GetHttpRange(url, httpClient, 0, 589);
+        var reader = new BinaryReader(new MemoryStream(headerBytes));
+        var copc = CopcReader.Read(reader);
 
-        var header = HeaderParser.ParseHeader(headerBytes);
+        var header = copc.Header;
         Assert.That(header.FileSignature == "LASF");
         Assert.That(header.FileSourceId == 0);
         Assert.That(header.GlobalEncoding == 16);
@@ -30,7 +33,7 @@ public class Tests
         Assert.That(header.FileCreationYear == 1);
         Assert.That(header.HeaderSize == 375);
         Assert.That(header.PointDataOffset == 1545);
-        Assert.That(header.NumberOfVariableLengthRecords == 3);
+        Assert.That(header.VlrCount == 3);
         Assert.That(header.PointDataRecordFormat == 6);
         Assert.That(header.PointDataRecordLength == 30);
         Assert.That(header.LegacyNumberOfPointRecords == 364384576);
@@ -72,7 +75,24 @@ public class Tests
         Assert.That(header.PointCountByReturn[12] == 0);
         Assert.That(header.PointCountByReturn[13] == 0);
         Assert.That(header.PointCountByReturn[14] == 0);
-            
+
+        var vlrInfo = copc.VlrInfo;
+        Assert.That(vlrInfo.Reserved == 0);
+        Assert.That(vlrInfo.UserId == "copc");
+        Assert.That(vlrInfo.RecordId == 1);
+        Assert.That(vlrInfo.RecordLength == 160);
+        Assert.That(vlrInfo.Description == "COPC info VLR");
+
+        var copcInfo = copc.CopcInfo;
+        Assert.That(copcInfo.CenterX == 376392.99749999976);
+        Assert.That(copcInfo.CenterY == 3757833.2855);
+        Assert.That(copcInfo.CenterZ == 545.194499999782);
+        Assert.That(copcInfo.HalfSize == 628.90349999978207);
+        Assert.That(copcInfo.Spacing == 9.8266171874965949);
+        Assert.That(copcInfo.RootHierarchyOffset == 2029609895);
+        Assert.That(copcInfo.RootHierarchySize == 86720);
+        Assert.That(copcInfo.GpsTimeMinimum == 285222.22806577);
+        Assert.That(copcInfo.GpsTimeMaximum == 285222.22806577);
     }
 
     private static async Task<byte[]> GetHttpRange(string url, HttpClient httpClient, int start = 0, int end = 0)
