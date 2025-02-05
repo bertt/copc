@@ -19,11 +19,13 @@ Sample file: https://s3.amazonaws.com/hobu-lidar/sofi.copc.laz
 
 ## Implementations 
 
-- https://github.com/DaviesCooper/LASReader
+- C#: https://github.com/DaviesCooper/LASReader
 
-- https://github.com/pka/copc-rs/
+- Rust: https://github.com/pka/copc-rs/
 
-- https://github.com/hobuinc/copcverify
+- Javascript: https://github.com/connormanning/copc.js
+
+- C++: https://github.com/hobuinc/copcverify
 
 ## Sample code
 
