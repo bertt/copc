@@ -13,6 +13,13 @@ public static class CopcInfoReader
         copcInfo.RootHierarchySize = reader.ReadUInt64();
         copcInfo.GpsTimeMinimum = reader.ReadDouble();
         copcInfo.GpsTimeMaximum = reader.ReadDouble();
+        ulong[] reserved = new ulong[11]; 
+
+        for (int i = 0; i < reserved.Length; i++)
+        {
+            reserved[i] = reader.ReadUInt64();
+            Console.WriteLine($"reserved[{i}] = {reserved[i]}");
+        }
         return copcInfo;
     }
 }

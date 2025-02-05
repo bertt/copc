@@ -21,4 +21,8 @@
     <ProjectReference Include="..\src\copc.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="textfixtures\" />
+  </ItemGroup>
+
 </Project>

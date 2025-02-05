@@ -1,8 +1,7 @@
 using NUnit.Framework;
 using System;
-using System.IO;
+using System.Linq;
 using System.Net.Http;
-using System.Net.Http.Headers;
 using System.Threading.Tasks;
 
 namespace copc;
@@ -16,9 +15,7 @@ public class Tests
         // 2.3GB sofi stadium
         var url = "https://s3.amazonaws.com/hobu-lidar/sofi.copc.laz";
         var httpClient = new HttpClient();
-        var headerBytes = await GetHttpRange(url, httpClient, 0, 589);
-        var reader = new BinaryReader(new MemoryStream(headerBytes));
-        var copc = CopcReader.Read(reader);
+        var copc = await CopcReader.ReadFromUrl(httpClient, url);
 
         var header = copc.Header;
         Assert.That(header.FileSignature == "LASF");
@@ -76,7 +73,7 @@ public class Tests
         Assert.That(header.PointCountByReturn[13] == 0);
         Assert.That(header.PointCountByReturn[14] == 0);
 
-        var vlrInfo = copc.VlrInfo;
+        var vlrInfo = copc.Vlrs.First();
         Assert.That(vlrInfo.Reserved == 0);
         Assert.That(vlrInfo.UserId == "copc");
         Assert.That(vlrInfo.RecordId == 1);
@@ -93,16 +90,7 @@ public class Tests
         Assert.That(copcInfo.RootHierarchySize == 86720);
         Assert.That(copcInfo.GpsTimeMinimum == 285222.22806577);
         Assert.That(copcInfo.GpsTimeMaximum == 285222.22806577);
-    }
 
-    private static async Task<byte[]> GetHttpRange(string url, HttpClient httpClient, int start = 0, int end = 0)
-    {
-        var request = new HttpRequestMessage(HttpMethod.Get, url);
-        request.Headers.Range = new RangeHeaderValue(start, end);
-
-        var response = await httpClient.SendAsync(request);
-        var content = await response.Content.ReadAsByteArrayAsync();
-
-        return content;
+        Assert.That(copc.Vlrs.Count == 3);
     }
 }

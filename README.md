@@ -30,13 +30,11 @@ Sample file: https://s3.amazonaws.com/hobu-lidar/sofi.copc.laz
 ```csharp
 var url = "https://s3.amazonaws.com/hobu-lidar/sofi.copc.laz";
 var httpClient = new HttpClient();
-var headerBytes = await GetHttpRange(url, httpClient, 0, 589);
-var reader = new BinaryReader(new MemoryStream(headerBytes));
-var copc = CopcReader.Read(reader);
+var copc = await CopcReader.ReadFromUrl(httpClient, url);
 ```
 
 ## Status 2025-01-29
 
-Done: Reading COPC Header, COPCInfo, VlrInfo
+Done: Reading COPC Header, COPCInfo, Vlrs
 
-Todo: Reading Vlr's + Evlrs + Points + Chunks _
+Todo: Reading Evlrs + Points + Chunks + LasZip
