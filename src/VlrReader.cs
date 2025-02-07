@@ -1,16 +1,35 @@
-﻿using System.Text;
+﻿using copc.io;
 
 namespace copc;
 public static class VlrReader
 {
-    public static VlrInfo Read(BinaryReader reader)
+    public static async Task<List<VlrInfo>> GetVlrs(BinaryFileProcessor processor, LasHeader header)
     {
-        var vlrInfo = new VlrInfo();
-        vlrInfo.Reserved = reader.ReadUInt16(); // reserved
-        vlrInfo.UserId = Encoding.ASCII.GetString(reader.ReadBytes(16)).TrimEnd('\0');
-        vlrInfo.RecordId = reader.ReadUInt16();
-        vlrInfo.RecordLength = reader.ReadUInt16();
-        vlrInfo.Description = Encoding.ASCII.GetString(reader.ReadBytes(32)).TrimEnd('\0');
-        return vlrInfo;
+        var vlrs = new List<VlrInfo>();
+        var vlrCount = (int)header.VlrCount;
+        var start = 589;
+        for (var i = 0; i < vlrCount - 1; i++)
+        {
+            var end = start + (i + 1) * 54;
+            var vlr = await GetVlr(processor, start, end);
+            vlrs.Add(vlr);
+
+            start = end;
+            end = start + vlr.RecordLength;
+
+            // todo read record?
+
+            start = end;
+        }
+
+        return vlrs;
+    }
+
+    private static async Task<VlrInfo> GetVlr(BinaryFileProcessor processor, int start, int end)
+    {
+        var headerBytes1 = await processor.Read(start, end);
+        var reader = new BinaryReader(new MemoryStream(headerBytes1));
+        var vlr = VlrInfoReader.Read(reader);
+        return vlr;
     }
 }

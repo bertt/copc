@@ -18,8 +18,8 @@ public class Tests
         var copc = await CopcReader.Read(file);
         var header = copc.Header;
         Assert.That(header.FileSignature == "LASF");
+        Assert.That(copc.Vlrs.Count == 3);
     }
-
 
     [Test]
     public async Task ReadCOPCFromUrl()
@@ -28,7 +28,7 @@ public class Tests
         // 2.3GB sofi stadium
         var url = "https://s3.amazonaws.com/hobu-lidar/sofi.copc.laz";
         var httpClient = new HttpClient();
-        var copc = await CopcReader.Read(httpClient, new Uri(url));
+        var copc = await CopcReader.Read(httpClient, url);
 
         var header = copc.Header;
         Assert.That(header.FileSignature == "LASF");
