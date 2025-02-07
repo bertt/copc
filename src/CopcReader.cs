@@ -1,9 +1,9 @@
 ﻿namespace copc;
 public static class CopcReader
 {
-    public static Copc Read(string file)
+    public static async Task<Copc> Read(string file)
     {
-        var headerBytes = BinaryFileReader.Read(file, 0, 589);
+        var headerBytes = await BinaryFileReader.Read(file, 0, 589);
         var reader = new BinaryReader(new MemoryStream(headerBytes));
         var copc = Read(reader);
         // Todo: add VLRS

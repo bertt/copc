@@ -34,14 +34,14 @@ Read COPC from URL:
 
 ```csharp
 var url = "https://s3.amazonaws.com/hobu-lidar/sofi.copc.laz";
-var httpClient = new HttpClient();
-var copc = await CopcReader.ReadFromUrl(httpClient, url);
+var copc = await CopcReader.Read(new Uri(url));
 ```
 
 Read COPC from file:
 
 ```csharp
-var copc = CopcReader.Read(file);
+var file "./testfixtures/ellipsoid.copc.laz"
+var copc = await CopcReader.Read(file);
 ```
 
 ## Status 2025-01-29

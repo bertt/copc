@@ -10,12 +10,12 @@ namespace copc;
 public class Tests
 {
     [Test]
-    public void ReadCopcFromFile()
+    public async Task ReadCopcFromFile()
     {
         var file = "./testfixtures/ellipsoid.copc.laz";
         var fileName = Path.Combine(TestContext.CurrentContext.WorkDirectory, file);
 
-        var copc = CopcReader.Read(file);
+        var copc = await CopcReader.Read(file);
         var header = copc.Header;
         Assert.That(header.FileSignature == "LASF");
     }

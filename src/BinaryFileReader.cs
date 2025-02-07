@@ -2,7 +2,7 @@
 
 public class BinaryFileReader
 {
-    public static byte[] Read(string filePath, long start, long end)
+    public static async Task<byte[]> Read(string filePath, long start, long end)
     {
         long length = end - start + 1;
         byte[] buffer = new byte[length];
@@ -10,7 +10,7 @@ public class BinaryFileReader
         using (var fs = new FileStream(filePath, FileMode.Open, FileAccess.Read))
         {
             fs.Seek(start, SeekOrigin.Begin);
-            fs.Read(buffer, 0, buffer.Length);
+            await fs.ReadAsync(buffer, 0, buffer.Length);
         }
 
         return buffer;
