@@ -1,4 +1,6 @@
-﻿using copc.io;
+﻿using copc.copc;
+using copc.io;
+using copc.las;
 
 namespace copc;
 public static class CopcReader

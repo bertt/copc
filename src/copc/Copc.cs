@@ -1,4 +1,6 @@
-﻿namespace copc;
+﻿using copc.las;
+
+namespace copc.copc;
 
 public class Copc
 {

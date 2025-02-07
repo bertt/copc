@@ -1,4 +1,4 @@
-﻿namespace copc;
+﻿namespace copc.copc;
 public static class CopcInfoReader
 {
     public static CopcInfo Read(BinaryReader reader)
@@ -13,7 +13,7 @@ public static class CopcInfoReader
         copcInfo.RootHierarchySize = reader.ReadUInt64();
         copcInfo.GpsTimeMinimum = reader.ReadDouble();
         copcInfo.GpsTimeMaximum = reader.ReadDouble();
-        ulong[] reserved = new ulong[11]; 
+        ulong[] reserved = new ulong[11];
 
         for (int i = 0; i < reserved.Length; i++)
         {

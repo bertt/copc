@@ -1,4 +1,4 @@
-﻿namespace copc
+﻿namespace copc.las
 {
     public class LasHeader
     {

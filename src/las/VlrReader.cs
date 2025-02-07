@@ -1,6 +1,6 @@
 ﻿using copc.io;
 
-namespace copc;
+namespace copc.las;
 public static class VlrReader
 {
     public static async Task<List<VlrInfo>> GetVlrs(BinaryFileReader binaryFileReader, int vlrCount)

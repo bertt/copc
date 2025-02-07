@@ -1,6 +1,6 @@
 ﻿using System.Text;
 
-namespace copc
+namespace copc.las
 {
     public static class LasHeaderReader
     {
