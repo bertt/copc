@@ -23,8 +23,8 @@ public static class CopcReader
         var reader = new BinaryReader(new MemoryStream(headerBytes));
         var copc = Read(reader);
         var header = copc.Header;
-
-        var vlrs = await VlrReader.GetVlrs(processor, header);
+        var vlrCount = (int)header.VlrCount;
+        var vlrs = await VlrReader.GetVlrs(processor, vlrCount);
         copc.Vlrs.AddRange(vlrs);
         return copc;
     }

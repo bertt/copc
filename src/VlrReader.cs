@@ -3,10 +3,9 @@
 namespace copc;
 public static class VlrReader
 {
-    public static async Task<List<VlrInfo>> GetVlrs(BinaryFileProcessor processor, LasHeader header)
+    public static async Task<List<VlrInfo>> GetVlrs(BinaryFileProcessor processor, int vlrCount)
     {
         var vlrs = new List<VlrInfo>();
-        var vlrCount = (int)header.VlrCount;
         var start = 589;
         for (var i = 0; i < vlrCount - 1; i++)
         {
