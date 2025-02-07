@@ -1,46 +1,32 @@
 ﻿namespace copc;
 public static class CopcReader
 {
-    public static async Task<Copc> ReadFromUrl(HttpClient client, string url)
+    public static Copc Read(string file)
     {
-        var headerBytes = await HttpRange.GetHttpRange(client, url, 0, 589);
+        var headerBytes = BinaryFileReader.Read(file, 0, 589);
         var reader = new BinaryReader(new MemoryStream(headerBytes));
         var copc = Read(reader);
+        // Todo: add VLRS
+        return copc;
+    }
 
-        var vlrs = new List<VlrInfo>();
-        // get the current position
-        var vlrCount = (int)copc.Header.VlrCount;
-        var start = 589;
-        for (var i = 0; i < vlrCount - 1; i++)
-        {
-            var end = start + (i + 1) * 54;
-            var vlr = await GetVlrFromUrl(client, url, start, end);
-            vlrs.Add(vlr);
+    public static async Task<Copc> Read(HttpClient client, Uri uri)
+    {
+        var headerBytes = await BinaryFileReader.Read(client, uri, 0, 589);
+        var reader = new BinaryReader(new MemoryStream(headerBytes));
+        var copc = Read(reader);
+        var header = copc.Header;
 
-            start = end;
-            end = start + vlr.RecordLength;
-
-            // todo read record?
-
-            start = end;
-        }
+        var vlrs = await VlrUriReader.GetVlrs(client, uri, header);
         copc.Vlrs.AddRange(vlrs);
 
         return copc;
     }
 
-    private static async Task<VlrInfo> GetVlrFromUrl(HttpClient client, string url, int start, int end)
-    {
-        var headerBytes1 = await HttpRange.GetHttpRange(client, url, start, end);
-        var reader1 = new BinaryReader(new MemoryStream(headerBytes1));
-        var vlr = VlrInfoReader.Read(reader1);
-        return vlr;
-    }
-
     public static Copc Read(BinaryReader reader)
     {
         var header = LasHeaderReader.Read(reader);
-        var vlrInfo = VlrInfoReader.Read(reader);
+        var vlrInfo = VlrReader.Read(reader);
         var copcInfo = CopcInfoReader.Read(reader);
         var copc = new Copc(header, copcInfo);
         copc.Vlrs.Add(vlrInfo);

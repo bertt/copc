@@ -1,7 +1,7 @@
 ﻿using System.Text;
 
 namespace copc;
-public static class VlrInfoReader
+public static class VlrReader
 {
     public static VlrInfo Read(BinaryReader reader)
     {

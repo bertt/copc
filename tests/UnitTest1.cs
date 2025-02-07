@@ -1,5 +1,6 @@
 using NUnit.Framework;
 using System;
+using System.IO;
 using System.Linq;
 using System.Net.Http;
 using System.Threading.Tasks;
@@ -9,13 +10,25 @@ namespace copc;
 public class Tests
 {
     [Test]
-    public async Task ReadCOPC()
+    public void ReadCopcFromFile()
+    {
+        var file = "./testfixtures/ellipsoid.copc.laz";
+        var fileName = Path.Combine(TestContext.CurrentContext.WorkDirectory, file);
+
+        var copc = CopcReader.Read(file);
+        var header = copc.Header;
+        Assert.That(header.FileSignature == "LASF");
+    }
+
+
+    [Test]
+    public async Task ReadCOPCFromUrl()
     {
         // 589 bytes
         // 2.3GB sofi stadium
         var url = "https://s3.amazonaws.com/hobu-lidar/sofi.copc.laz";
         var httpClient = new HttpClient();
-        var copc = await CopcReader.ReadFromUrl(httpClient, url);
+        var copc = await CopcReader.Read(httpClient, new Uri(url));
 
         var header = copc.Header;
         Assert.That(header.FileSignature == "LASF");

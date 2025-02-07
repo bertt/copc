@@ -29,10 +29,19 @@ Sample file: https://s3.amazonaws.com/hobu-lidar/sofi.copc.laz
 
 ## Sample code
 
+Read COPC from URL:
+
+
 ```csharp
 var url = "https://s3.amazonaws.com/hobu-lidar/sofi.copc.laz";
 var httpClient = new HttpClient();
 var copc = await CopcReader.ReadFromUrl(httpClient, url);
+```
+
+Read COPC from file:
+
+```csharp
+var copc = CopcReader.Read(file);
 ```
 
 ## Status 2025-01-29
