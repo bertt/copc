@@ -1,5 +1,6 @@
 ﻿using Copc.Io;
 using Copc.Las;
+using System.Text;
 
 namespace Copc;
 public static class BinaryFileReaderExtensions
@@ -28,9 +29,39 @@ public static class BinaryFileReaderExtensions
 
             start = end;
             end = start + vlr.RecordLength;
+            var recordBinaryReader = await binaryFileReader.Read(start, end);
+            var recordReader = new BinaryReader(new MemoryStream(recordBinaryReader));
 
-            // todo read record?
+            if (vlr.RecordId == 22204 && vlr.UserId == "laszip encoded")
+            {
+                var lazVlr = new LazVlr();
+                lazVlr.Compressor = recordReader.ReadUInt16();
+                lazVlr.Coder = recordReader.ReadUInt16();
+                lazVlr.VersionMajor = recordReader.ReadByte();
+                lazVlr.VersionMinor = recordReader.ReadByte();
+                lazVlr.VersionRevision = recordReader.ReadUInt16();
+                lazVlr.Options = recordReader.ReadUInt32();
+                lazVlr.ChunkSize = recordReader.ReadUInt32();
+                lazVlr.EvlrsCount = recordReader.ReadInt64();
+                lazVlr.EvlrsOffset = recordReader.ReadInt64();
+                lazVlr.NumberOfItems = recordReader.ReadInt16();
 
+                for (var j = 0; j < lazVlr.NumberOfItems; j++)
+                {
+                    var item = new LazVlrItem();
+                    item.Type = recordReader.ReadUInt16();
+                    item.Size = recordReader.ReadUInt16();
+                    item.Version = recordReader.ReadUInt16();
+                    lazVlr.Items.Add(item);
+                }
+                // todo: do something with LazVlr record
+            }
+            else if (vlr.RecordId == 2112 && vlr.UserId == "LASF_Projection")
+            {
+                // 681 bytes in file, what's the spec?
+                var wkt = Encoding.ASCII.GetString(recordReader.ReadBytes(vlr.RecordLength)).TrimEnd('\0');
+            }
+            // todo add others like what?
             start = end;
         }
 
