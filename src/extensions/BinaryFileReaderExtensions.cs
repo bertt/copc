@@ -29,8 +29,8 @@ public static class BinaryFileReaderExtensions
 
             start = end;
             end = start + vlr.RecordLength;
-            var recordBinaryReader = await binaryFileReader.Read(start, end);
-            var recordReader = new BinaryReader(new MemoryStream(recordBinaryReader));
+            var recordBytes = await binaryFileReader.Read(start, end);
+            var recordReader = new BinaryReader(new MemoryStream(recordBytes));
 
             if (vlr.RecordId == 22204 && vlr.UserId == "laszip encoded")
             {
@@ -54,12 +54,12 @@ public static class BinaryFileReaderExtensions
                     item.Version = recordReader.ReadUInt16();
                     lazVlr.Items.Add(item);
                 }
-                // todo: do something with LazVlr record
+                vlr.Data = lazVlr;
             }
             else if (vlr.RecordId == 2112 && vlr.UserId == "LASF_Projection")
             {
-                // 681 bytes in file, what's the spec?
-                var wkt = Encoding.ASCII.GetString(recordReader.ReadBytes(vlr.RecordLength)).TrimEnd('\0');
+                var wkt = Encoding.UTF8.GetString(recordBytes).TrimEnd('\0');
+                vlr.Data = wkt;
             }
             // todo add others like what?
             start = end;

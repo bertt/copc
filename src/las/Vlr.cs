@@ -6,4 +6,6 @@ public class Vlr
     public ushort RecordId { get; set; }
     public ushort RecordLength { get; set; }
     public string Description { get; set; }
+
+    public object Data { get; set; }
 }
