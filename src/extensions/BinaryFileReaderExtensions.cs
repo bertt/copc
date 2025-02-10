@@ -16,9 +16,9 @@ public static class BinaryFileReaderExtensions
         return copc;
     }
 
-    private static async Task<List<VlrInfo>> GetVlrs(this BinaryFileReader binaryFileReader, int vlrCount)
+    private static async Task<List<Vlr>> GetVlrs(this BinaryFileReader binaryFileReader, int vlrCount)
     {
-        var vlrs = new List<VlrInfo>();
+        var vlrs = new List<Vlr>();
         var start = 589;
         for (var i = 0; i < vlrCount - 1; i++)
         {
@@ -37,11 +37,11 @@ public static class BinaryFileReaderExtensions
         return vlrs;
     }
 
-    private static async Task<VlrInfo> GetVlr(this BinaryFileReader processor, int start, int end)
+    private static async Task<Vlr> GetVlr(this BinaryFileReader processor, int start, int end)
     {
         var headerBytes1 = await processor.Read(start, end);
         var reader = new BinaryReader(new MemoryStream(headerBytes1));
-        var vlr = VlrInfoReader.Read(reader);
+        var vlr = VlrReader.Read(reader);
         return vlr;
     }
 

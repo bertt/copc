@@ -1,5 +1,5 @@
 ﻿namespace Copc.Las;
-public class VlrInfo
+public class Vlr
 {
     public ushort Reserved { get; set; }
     public string UserId { get; set; }
