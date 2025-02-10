@@ -6,10 +6,11 @@ namespace copc.las
     {
         public static LasHeader Read(BinaryReader reader)
         {
-            var header = new LasHeader();
-            header.FileSignature = Encoding.Default.GetString(reader.ReadBytes(4));
-            header.FileSourceId = reader.ReadUInt16();
-            header.GlobalEncoding = reader.ReadUInt16();
+            var FileSignature = Encoding.Default.GetString(reader.ReadBytes(4));
+            var FileSourceId = reader.ReadUInt16();
+            var GlobalEncoding = reader.ReadUInt16();
+            var header = new LasHeader(FileSignature, FileSourceId,GlobalEncoding);
+
             header.ProjectId = new Guid(reader.ReadInt32(), reader.ReadInt16(), reader.ReadInt16(), reader.ReadBytes(8));
             header.LasMajorVersion = reader.ReadByte();
             header.LasMinorVersion = reader.ReadByte();

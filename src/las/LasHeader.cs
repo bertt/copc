@@ -1,8 +1,18 @@
-﻿namespace copc.las
+﻿using System.Diagnostics.CodeAnalysis;
+
+namespace copc.las
 {
     public class LasHeader
     {
-        public string FileSignature { get; set; }
+        [SetsRequiredMembers]
+        public LasHeader(string FileSignature, ushort FileSourceId, ushort GlobalEncoding)
+        {
+            this.FileSignature = FileSignature;
+            this.FileSourceId = FileSourceId;
+            this.GlobalEncoding = GlobalEncoding;
+        }
+
+        public required string FileSignature { get; set; }
         public ushort FileSourceId { get; internal set; }
         public ushort GlobalEncoding { get; internal set; }
         public Guid ProjectId { get; internal set; }
