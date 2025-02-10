@@ -1,6 +1,6 @@
 ﻿using System.Net.Http.Headers;
 
-namespace copc.io;
+namespace Copc.Io;
 
 public class HttpBinaryFileReader : BinaryFileReader
 {

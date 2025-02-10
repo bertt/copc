@@ -1,6 +1,6 @@
-﻿using copc.las;
+﻿using Copc.Las;
 
-namespace copc.copc;
+namespace Copc;
 
 public class Copc
 {

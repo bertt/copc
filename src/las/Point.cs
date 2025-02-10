@@ -1,4 +1,4 @@
-﻿namespace copc.las;
+﻿namespace Copc.Las;
 public class Point
 {
     public long X { get; set; }

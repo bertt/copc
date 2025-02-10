@@ -1,4 +1,4 @@
-﻿namespace copc.las;
+﻿namespace Copc.Las;
 public class VlrInfo
 {
     public ushort Reserved { get; set; }

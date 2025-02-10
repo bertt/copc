@@ -1,7 +1,6 @@
-﻿using copc.copc;
-using copc.las;
+﻿using Copc.Las;
 
-namespace copc;
+namespace Copc;
 public static class BinaryReaderExtensions
 {
     public static Copc ReadCopc(this BinaryReader reader)

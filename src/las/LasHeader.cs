@@ -1,6 +1,6 @@
 ﻿using System.Diagnostics.CodeAnalysis;
 
-namespace copc.las
+namespace Copc.Las
 {
     public class LasHeader
     {

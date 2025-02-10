@@ -1,4 +1,4 @@
-﻿namespace copc.copc;
+﻿namespace Copc;
 public static class CopcInfoReader
 {
     public static CopcInfo Read(BinaryReader reader)

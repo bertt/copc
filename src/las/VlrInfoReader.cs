@@ -1,6 +1,6 @@
 ﻿using System.Text;
 
-namespace copc.las;
+namespace Copc.Las;
 public static class VlrInfoReader
 {
     public static VlrInfo Read(BinaryReader reader)

@@ -1,4 +1,4 @@
-﻿namespace copc.copc;
+﻿namespace Copc;
 
 public class CopcInfo
 {

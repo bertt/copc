@@ -1,8 +1,7 @@
-﻿using copc.copc;
-using copc.io;
-using copc.las;
+﻿using Copc.Io;
+using Copc.Las;
 
-namespace copc;
+namespace Copc;
 public static class BinaryFileReaderExtensions
 {
     public static async Task<Copc> Read(this BinaryFileReader binaryFileReader)
