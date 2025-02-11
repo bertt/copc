@@ -19,19 +19,19 @@ public static class BinaryFileReaderExtensions
         var vlrCount = (int)header.VlrCount;
         var vlrs = await binaryFileReader.GetVlrs(589, vlrCount - 1);
         copc.Vlrs.AddRange(vlrs);
-        var evlrs = await binaryFileReader.GetVlrs(header.EvlrOffset, (int)header.EvlrCount);
+        var evlrs = await binaryFileReader.GetVlrs(header.EvlrOffset, (int)header.EvlrCount, true);
         copc.Vlrs.AddRange(evlrs);
         return copc;
     }
 
 
-    private static async Task<List<Vlr>> GetVlrs(this BinaryFileReader binaryFileReader, long offset, int vlrCount)
+    private static async Task<List<Vlr>> GetVlrs(this BinaryFileReader binaryFileReader, long offset, int vlrCount, bool isEvlr = false)
     {
         var vlrs = new List<Vlr>();
         for (var i = 1; i <= vlrCount; i++)
         {
             var end = offset + 54;
-            var vlr = await GetVlr(binaryFileReader, offset, end);
+            var vlr = await GetVlr(binaryFileReader, offset, end, isEvlr);
             vlrs.Add(vlr);
 
             offset = end;
@@ -100,11 +100,11 @@ public static class BinaryFileReaderExtensions
         return lazVlr;
     }
 
-    private static async Task<Vlr> GetVlr(this BinaryFileReader processor, long start, long end)
+    private static async Task<Vlr> GetVlr(this BinaryFileReader processor, long start, long end, bool isEvlr = false)
     {
         var headerBytes1 = await processor.Read(start, end);
         var reader = new BinaryReader(new MemoryStream(headerBytes1));
-        var vlr = VlrReader.Read(reader);
+        var vlr = VlrReader.Read(reader, isEvlr);
         return vlr;
     }
 
