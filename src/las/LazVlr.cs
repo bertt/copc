@@ -1,5 +1,4 @@
-﻿using System;
-namespace Copc.Las;
+﻿namespace Copc.Las;
 public class LazVlr
 {
     public ushort Compressor { get; set; }

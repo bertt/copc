@@ -7,15 +7,20 @@ public static class BinaryFileReaderExtensions
 {
     public static async Task<Copc> Read(this BinaryFileReader binaryFileReader)
     {
-        var headerBytes = await binaryFileReader.Read(0, 589);
+        var headerBytes = await binaryFileReader.Read(0, 375);
         var reader = new BinaryReader(new MemoryStream(headerBytes));
-        var copc = reader.ReadCopc();
-        var header = copc.Header;
+        var header = LasHeaderReader.Read(reader);
+
+        var copc = new Copc(header);
+
+        var copcVlr = await binaryFileReader.GetVlrs(375, 1);
+        copc.Vlrs.Add(copcVlr.FirstOrDefault());
+
         var vlrCount = (int)header.VlrCount;
-        var vlrs = await binaryFileReader.GetVlrs(589, vlrCount-1);
+        var vlrs = await binaryFileReader.GetVlrs(589, vlrCount - 1);
         copc.Vlrs.AddRange(vlrs);
         var evlrs = await binaryFileReader.GetVlrs(header.EvlrOffset, (int)header.EvlrCount);
-        copc.Evlrs = evlrs;
+        copc.Vlrs.AddRange(evlrs);
         return copc;
     }
 
@@ -31,7 +36,7 @@ public static class BinaryFileReaderExtensions
 
             offset = end;
             end = offset + vlr.RecordLength;
-            var recordBytes = await binaryFileReader.Read(offset, end-1);
+            var recordBytes = await binaryFileReader.Read(offset, end - 1);
             var binaryReader = new BinaryReader(new MemoryStream(recordBytes));
             vlr.ContentOffset = offset;
 
@@ -43,7 +48,6 @@ public static class BinaryFileReaderExtensions
                         vlr.Data = lazVlr;
                         break;
                     }
-
                 case 2112 when vlr.UserId == "LASF_Projection":
                     {
                         var wkt = Encoding.UTF8.GetString(recordBytes);
@@ -52,12 +56,17 @@ public static class BinaryFileReaderExtensions
                     }
                 case 1000 when vlr.UserId == "copc":
                     {
-                        // todo parse the bytes? something with voxelKey, entry
                         vlr.Data = recordBytes;
                         break;
                     }
-
+                case 1 when vlr.UserId == "copc":
+                    {
+                        var copcInfoReader = CopcInfoReader.Read(binaryReader);
+                        vlr.Data = copcInfoReader;
+                        break;
+                    }
             }
+
             // todo add others like what?
             offset = end;
         }

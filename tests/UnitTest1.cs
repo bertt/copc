@@ -1,3 +1,4 @@
+using Copc;
 using Copc.Las;
 using NUnit.Framework;
 using System;
@@ -19,7 +20,7 @@ public class Tests
         var copc = await CopcReader.Read(file);
         var header = copc.Header;
         Assert.That(header.FileSignature == "LASF");
-        Assert.That(copc.Vlrs.Count == 3);
+        Assert.That(copc.Vlrs.Count == 4);
         Assert.That(copc.Vlrs[1].ContentOffset == 643);
         var lazVlr = (LazVlr)copc.Vlrs[1].Data;
         Assert.That(lazVlr.ChunkSize == 4294967295);
@@ -34,14 +35,13 @@ public class Tests
         Assert.That(lazVlr.VersionRevision == 3);
         Assert.That(copc.Vlrs[2].ContentOffset == 743);
         Assert.That(((string)copc.Vlrs[2].Data) == "PROJCS[\"WGS 84 / Pseudo-Mercator\",GEOGCS[\"WGS 84\",DATUM[\"WGS_1984\",SPHEROID[\"WGS 84\",6378137,298.257223563,AUTHORITY[\"EPSG\",\"7030\"]],AUTHORITY[\"EPSG\",\"6326\"]],PRIMEM[\"Greenwich\",0,AUTHORITY[\"EPSG\",\"8901\"]],UNIT[\"degree\",0.0174532925199433,AUTHORITY[\"EPSG\",\"9122\"]],AUTHORITY[\"EPSG\",\"4326\"]],PROJECTION[\"Mercator_1SP\"],PARAMETER[\"central_meridian\",0],PARAMETER[\"scale_factor\",1],PARAMETER[\"false_easting\",0],PARAMETER[\"false_northing\",0],UNIT[\"metre\",1,AUTHORITY[\"EPSG\",\"9001\"]],AXIS[\"Easting\",EAST],AXIS[\"Northing\",NORTH],EXTENSION[\"PROJ4\",\"+proj=merc +a=6378137 +b=6378137 +lat_ts=0 +lon_0=0 +x_0=0 +y_0=0 +k=1 +units=m +nadgrids=@null +wktext +no_defs\"],AUTHORITY[\"EPSG\",\"3857\"]]");
-        Assert.That(copc.Evlrs.Count == 1);
-        Assert.That(copc.Evlrs[0].ContentOffset == 630520 + 54);
-        Assert.That(copc.Evlrs[0].RecordLength == 160);
-        Assert.That(copc.Evlrs[0].RecordId == 1000);
-        Assert.That(copc.Evlrs[0].Description == "EPT Hierarchy");
-        Assert.That(copc.Evlrs[0].UserId == "copc");
-        Assert.That(copc.Evlrs[0].Reserved == 0);
-
+        
+        Assert.That(copc.Vlrs[3].ContentOffset == 630520 + 54);
+        Assert.That(copc.Vlrs[3].RecordLength == 160);
+        Assert.That(copc.Vlrs[3].RecordId == 1000);
+        Assert.That(copc.Vlrs[3].Description == "EPT Hierarchy");
+        Assert.That(copc.Vlrs[3].UserId == "copc");
+        Assert.That(copc.Vlrs[3].Reserved == 0);
     }
 
     [Test]
@@ -116,7 +116,7 @@ public class Tests
         Assert.That(vlrInfo.RecordLength == 160);
         Assert.That(vlrInfo.Description == "COPC info VLR");
 
-        var copcInfo = copc.CopcInfo;
+        var copcInfo = (CopcInfo)vlrInfo.Data;
         Assert.That(copcInfo.CenterX == 376392.99749999976);
         Assert.That(copcInfo.CenterY == 3757833.2855);
         Assert.That(copcInfo.CenterZ == 545.194499999782);
@@ -126,7 +126,6 @@ public class Tests
         Assert.That(copcInfo.RootHierarchySize == 86720);
         Assert.That(copcInfo.GpsTimeMinimum == 285222.22806577);
         Assert.That(copcInfo.GpsTimeMaximum == 285222.22806577);
-
-        Assert.That(copc.Vlrs.Count == 3);
+        Assert.That(copc.Vlrs.Count == 4);
     }
 }
