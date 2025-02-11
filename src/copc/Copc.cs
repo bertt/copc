@@ -15,5 +15,7 @@ public class Copc
 
     public List<Vlr> Vlrs { get; set; }
 
+    public List<Vlr> Evlrs { get; set; }
+
     public CopcInfo CopcInfo { get; set; }
 }

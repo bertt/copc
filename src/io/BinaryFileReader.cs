@@ -1,4 +1,5 @@
-﻿namespace Copc.Io;
+﻿
+namespace Copc.Io;
 
 public abstract class BinaryFileReader
 {
