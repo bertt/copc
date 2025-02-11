@@ -1,6 +1,7 @@
 ﻿namespace Copc.Las;
 public class Vlr
 {
+    public long ContentOffset { get; set; }
     public ushort Reserved { get; set; }
     public string UserId { get; set; }
     public ushort RecordId { get; set; }

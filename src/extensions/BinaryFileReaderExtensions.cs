@@ -1,5 +1,6 @@
 ﻿using Copc.Io;
 using Copc.Las;
+using System.Reflection.Metadata;
 using System.Text;
 
 namespace Copc;
@@ -21,17 +22,17 @@ public static class BinaryFileReaderExtensions
     {
         var vlrs = new List<Vlr>();
         var start = 589;
-        for (var i = 0; i < vlrCount - 1; i++)
+        for (var i = 1; i < vlrCount; i++)
         {
-            var end = start + (i + 1) * 54;
+            var end = start + 54;
             var vlr = await GetVlr(binaryFileReader, start, end);
             vlrs.Add(vlr);
 
             start = end;
             end = start + vlr.RecordLength;
-            var recordBytes = await binaryFileReader.Read(start, end);
+            var recordBytes = await binaryFileReader.Read(start, end-1);
             var recordReader = new BinaryReader(new MemoryStream(recordBytes));
-
+            vlr.ContentOffset = start;
             if (vlr.RecordId == 22204 && vlr.UserId == "laszip encoded")
             {
                 var lazVlr = new LazVlr();

@@ -1,3 +1,4 @@
+using Copc.Las;
 using NUnit.Framework;
 using System;
 using System.IO;
@@ -19,6 +20,20 @@ public class Tests
         var header = copc.Header;
         Assert.That(header.FileSignature == "LASF");
         Assert.That(copc.Vlrs.Count == 3);
+        Assert.That(copc.Vlrs[1].ContentOffset == 643);
+        var lazVlr = (LazVlr)copc.Vlrs[1].Data;
+        Assert.That(lazVlr.ChunkSize == 4294967295);
+        Assert.That(lazVlr.Compressor == 3);
+        Assert.That(lazVlr.Coder == 0);
+        Assert.That(lazVlr.EvlrsCount == -1);
+        Assert.That(lazVlr.EvlrsOffset == -1);
+        Assert.That(lazVlr.NumberOfItems == 2);
+        Assert.That(lazVlr.Options == 0);
+        Assert.That(lazVlr.VersionMajor == 3);
+        Assert.That(lazVlr.VersionMinor == 4);
+        Assert.That(lazVlr.VersionRevision == 3);
+        Assert.That(copc.Vlrs[2].ContentOffset == 743);
+        Assert.That(((string)copc.Vlrs[2].Data) == "PROJCS[\"WGS 84 / Pseudo-Mercator\",GEOGCS[\"WGS 84\",DATUM[\"WGS_1984\",SPHEROID[\"WGS 84\",6378137,298.257223563,AUTHORITY[\"EPSG\",\"7030\"]],AUTHORITY[\"EPSG\",\"6326\"]],PRIMEM[\"Greenwich\",0,AUTHORITY[\"EPSG\",\"8901\"]],UNIT[\"degree\",0.0174532925199433,AUTHORITY[\"EPSG\",\"9122\"]],AUTHORITY[\"EPSG\",\"4326\"]],PROJECTION[\"Mercator_1SP\"],PARAMETER[\"central_meridian\",0],PARAMETER[\"scale_factor\",1],PARAMETER[\"false_easting\",0],PARAMETER[\"false_northing\",0],UNIT[\"metre\",1,AUTHORITY[\"EPSG\",\"9001\"]],AXIS[\"Easting\",EAST],AXIS[\"Northing\",NORTH],EXTENSION[\"PROJ4\",\"+proj=merc +a=6378137 +b=6378137 +lat_ts=0 +lon_0=0 +x_0=0 +y_0=0 +k=1 +units=m +nadgrids=@null +wktext +no_defs\"],AUTHORITY[\"EPSG\",\"3857\"]]");
     }
 
     [Test]
