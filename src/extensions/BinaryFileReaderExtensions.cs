@@ -30,7 +30,7 @@ public static class BinaryFileReaderExtensions
         var vlrs = new List<Vlr>();
         for (var i = 1; i <= vlrCount; i++)
         {
-            var end = offset + 54;
+            var end = isEvlr? offset + 60: offset + 54;
             var vlr = await GetVlr(binaryFileReader, offset, end, isEvlr);
             vlrs.Add(vlr);
 
