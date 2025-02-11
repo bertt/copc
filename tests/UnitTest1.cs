@@ -127,8 +127,10 @@ public class Tests
         Assert.That(copcInfo.GpsTimeMinimum == 285222.22806577);
         Assert.That(copcInfo.GpsTimeMaximum == 285222.22806577);
         Assert.That(copc.Vlrs.Count == 4);
+        Assert.That(copc.Vlrs[0].IsExtended == false);
         Assert.That(copc.Vlrs[3].Description == "EPT Hierarchy");
         Assert.That(copc.Vlrs[3].RecordLength == 424928);
         Assert.That(copc.Vlrs[3].ContentOffset == 2029271687);
+        Assert.That(copc.Vlrs[3].IsExtended = true);
     }
 }
