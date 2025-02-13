@@ -53,7 +53,6 @@ public static class BinaryFileReaderExtensions
                 };
 
                 var key = $"{d}-{x}-{y}-{z}";
-                Debug.WriteLine("KEY: "+ key);
                 copc.HierarchyPages.Add(hierarchyPage);
             }
         }

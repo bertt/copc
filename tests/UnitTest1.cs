@@ -147,6 +147,11 @@ public class Tests
 
         // select all hierarchy pages with key 4-3-3-1
         var hierarchyPages = copc.HierarchyPages.Where(h => h.Key == "4-3-3-1").ToList();
-        Assert.That(hierarchyPages.Count == 2); // is this allowed?
+        Assert.That(hierarchyPages.Count == 2); 
+        Assert.That(hierarchyPages[0].PointCount == 19164);
+        Assert.That(hierarchyPages[1].PointCount == -1); // parent hierarchy page
+
+        var parentHierarchyPages = copc.HierarchyPages.Where(h => h.PointCount == -1).ToList();
+        Assert.That(parentHierarchyPages.Count == 111); // 111 cases with parent - child hierarchy pages
     }
 }
