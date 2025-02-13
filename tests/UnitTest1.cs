@@ -144,5 +144,9 @@ public class Tests
         Assert.That(copc.Vlrs[3].IsExtended = true);
 
         Assert.That(copc.HierarchyPages.Count == 13279);
+
+        // select all hierarchy pages with key 4-3-3-1
+        var hierarchyPages = copc.HierarchyPages.Where(h => h.Key == "4-3-3-1").ToList();
+        Assert.That(hierarchyPages.Count == 2); // is this allowed?
     }
 }
