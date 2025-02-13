@@ -1,8 +1,8 @@
 ﻿using copc.copc;
 using Copc.Io;
 using Copc.Las;
-using System.Diagnostics;
 using System.Text;
+
 
 namespace Copc;
 public static class BinaryFileReaderExtensions
@@ -55,6 +55,11 @@ public static class BinaryFileReaderExtensions
                 var key = $"{d}-{x}-{y}-{z}";
                 copc.HierarchyPages.Add(hierarchyPage);
             }
+
+            var rootHierarchyPage = copc.HierarchyPages.First();
+            var end = (long)rootHierarchyPage.PointDataOffset + rootHierarchyPage.PointDataLength - 1;
+            var compressedPoints = await binaryFileReader.Read((long)rootHierarchyPage.PointDataOffset, end);
+            // todo: read point data but how, 66272 points in ellipsoid.copc.laz, see file ellipsoid_root_page.bin in testfixtures. 
         }
         return copc;
     }

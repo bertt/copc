@@ -52,6 +52,10 @@ public class Tests
         Assert.That(firstHierarchyPage.PointCount == 66272);
         Assert.That(firstHierarchyPage.PointDataOffset == 1432);
         Assert.That(firstHierarchyPage.PointDataLength == 358488);
+
+        // request root hierachy page
+        var rootHierarchyPage = copc.HierarchyPages.First();
+
     }
 
     [Test]
