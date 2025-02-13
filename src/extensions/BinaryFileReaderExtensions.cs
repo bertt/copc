@@ -1,6 +1,7 @@
 ﻿using copc.copc;
 using Copc.Io;
 using Copc.Las;
+using System.Diagnostics;
 using System.Text;
 
 namespace Copc;
@@ -51,6 +52,8 @@ public static class BinaryFileReaderExtensions
                     PointCount = pointCount
                 };
 
+                var key = $"{d}-{x}-{y}-{z}";
+                Debug.WriteLine("KEY: "+ key);
                 copc.HierarchyPages.Add(hierarchyPage);
             }
         }

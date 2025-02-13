@@ -9,5 +9,7 @@
         public ulong PointDataOffset { get; set; }
         public int PointDataLength { get; set; }
         public int PointCount { get; set; }
+        public string Key => $"{Depth}-{X}-{Y}-{Z}";
+
     }
 }
