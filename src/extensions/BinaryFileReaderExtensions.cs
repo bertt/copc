@@ -58,13 +58,13 @@ public static class BinaryFileReaderExtensions
     }
 
 
-    private static async Task<List<Vlr>> GetVlrs(this BinaryFileReader binaryFileReader, long offset, int vlrCount, bool isEvlr = false)
+    private static async Task<List<Vlr>> GetVlrs(this BinaryFileReader binaryFileReader, long offset, int vlrCount, bool isExtendes = false)
     {
         var vlrs = new List<Vlr>();
         for (var i = 1; i <= vlrCount; i++)
         {
-            var end = isEvlr? offset + 60: offset + 54;
-            var vlr = await GetVlr(binaryFileReader, offset, end, isEvlr);
+            var end = isExtendes? offset + 60: offset + 54;
+            var vlr = await GetVlr(binaryFileReader, offset, end, isExtendes);
             vlrs.Add(vlr);
 
             offset = end;
@@ -89,6 +89,7 @@ public static class BinaryFileReaderExtensions
                     }
                 case 1000 when vlr.UserId == "copc":
                     {
+                        // var nodeCount = recordBytes.ReadUInt32();
                         vlr.Data = recordBytes;
                         break;
                     }
@@ -133,11 +134,11 @@ public static class BinaryFileReaderExtensions
         return lazVlr;
     }
 
-    private static async Task<Vlr> GetVlr(this BinaryFileReader processor, long start, long end, bool isEvlr = false)
+    private static async Task<Vlr> GetVlr(this BinaryFileReader processor, long start, long end, bool isExtended = false)
     {
         var headerBytes1 = await processor.Read(start, end);
         var reader = new BinaryReader(new MemoryStream(headerBytes1));
-        var vlr = VlrReader.Read(reader, isEvlr);
+        var vlr = VlrReader.Read(reader, isExtended);
         return vlr;
     }
 
