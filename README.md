@@ -45,7 +45,7 @@ var file "./testfixtures/ellipsoid.copc.laz"
 var copc = await CopcReader.Read(file);
 ```
 
-## Status 2025-02-11
+## Status 2025-02-13
 
 Done: Reading COPC Header, COPCInfo, Vlrs, eVLRS, Hierarchy Pages
 
