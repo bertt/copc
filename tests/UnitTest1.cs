@@ -42,6 +42,16 @@ public class Tests
         Assert.That(copc.Vlrs[3].Description == "EPT Hierarchy");
         Assert.That(copc.Vlrs[3].UserId == "copc");
         Assert.That(copc.Vlrs[3].Reserved == 0);
+
+        Assert.That(copc.HierarchyPages.Count == 5);
+        var firstHierarchyPage = copc.HierarchyPages[0];
+        Assert.That(firstHierarchyPage.Depth == 0);
+        Assert.That(firstHierarchyPage.X == 0);
+        Assert.That(firstHierarchyPage.Y == 0);
+        Assert.That(firstHierarchyPage.Z == 0);
+        Assert.That(firstHierarchyPage.PointCount == 66272);
+        Assert.That(firstHierarchyPage.PointDataOffset == 1432);
+        Assert.That(firstHierarchyPage.PointDataLength == 358488);
     }
 
     [Test]
@@ -130,5 +140,7 @@ public class Tests
         Assert.That(copc.Vlrs[3].Description == "EPT Hierarchy");
         Assert.That(copc.Vlrs[3].RecordLength == 424928);
         Assert.That(copc.Vlrs[3].ContentOffset == 2029271687);
+
+        Assert.That(copc.HierarchyPages.Count == 13279);
     }
 }

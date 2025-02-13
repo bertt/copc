@@ -47,6 +47,6 @@ var copc = await CopcReader.Read(file);
 
 ## Status 2025-02-11
 
-Done: Reading COPC Header, COPCInfo, Vlrs, eVLRS
+Done: Reading COPC Header, COPCInfo, Vlrs, eVLRS, Hierarchy Pages
 
-Todo: Reading Points + Chunks + LasZip
+Todo: Reading Points per hierarchy page + unzip (using LasZip?)

@@ -1,4 +1,5 @@
-﻿using Copc.Io;
+﻿using copc.copc;
+using Copc.Io;
 using Copc.Las;
 using System.Text;
 
@@ -21,6 +22,38 @@ public static class BinaryFileReaderExtensions
         copc.Vlrs.AddRange(vlrs);
         var evlrs = await binaryFileReader.GetVlrs(header.EvlrOffset, (int)header.EvlrCount, true);
         copc.Vlrs.AddRange(evlrs);
+
+        var hierarchyEvlr = copc.Vlrs.FirstOrDefault(v => v.RecordId == 1000 && v.UserId == "copc");
+        if (hierarchyEvlr != null)
+        {
+            var hierarchyItemLength = 32;
+            var bytes = (byte[])hierarchyEvlr.Data;
+            var binaryReader = new BinaryReader(new MemoryStream(bytes));
+
+            for (var i = 0; i < bytes.Length; i += hierarchyItemLength)
+            {
+                var d = binaryReader.ReadInt32();
+                var x = binaryReader.ReadInt32();
+                var y = binaryReader.ReadInt32();
+                var z = binaryReader.ReadInt32();
+                var offset = binaryReader.ReadUInt64();
+                var length = binaryReader.ReadInt32();
+                var pointCount = binaryReader.ReadInt32();
+
+                var hierarchyPage = new HierarchyPage
+                {
+                    Depth = d,
+                    X = x,
+                    Y = y,
+                    Z = z,
+                    PointDataOffset = offset,
+                    PointDataLength = length,
+                    PointCount = pointCount
+                };
+
+                copc.HierarchyPages.Add(hierarchyPage);
+            }
+        }
         return copc;
     }
 
